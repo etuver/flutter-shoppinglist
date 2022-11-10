@@ -1,23 +1,38 @@
 import 'package:flutter/material.dart';
+import 'Listing.dart';
 
 void main() {
   runApp(const MyApp());
-  //var items = [];
-  items.add("Potet");
-  items.add("Gulrot");
-  items.add("Kjøtt");
-  items.add("Epler");
-  items.add("Buljong");
-  items.add("Egg");
-  items.add("Makaroni");
-  items.add("Dopapir");
-  items.add("Vaskemiddel");
-  items.add("Smør");
-  items.add("Zalo");
+  //items.add("Potet");
+  //items.add("Gulrot");
+  //items.add("Kjøtt");
+  //items.add("Epler");
+  //items.add("Buljong");
+  //items.add("Egg");
+  //items.add("Makaroni");
+  //items.add("Dopapir");
+  //items.add("Vaskemiddel");
+  //items.add("Smør");
+  //items.add("Zalo");
+  shoppingList.add(Listing(name: "Potet"));
+  shoppingList.add(Listing(name: "Gulrot"));
+  shoppingList.add(Listing(name: "Kjøtt"));
+  shoppingList.add(Listing(name: "Epler"));
+  shoppingList.add(Listing(name: "Buljong"));
+  shoppingList.add(Listing(name: "Egg"));
+  shoppingList.add(Listing(name: "Makaroni"));
+  shoppingList.add(Listing(name: "Brød"));
+  shoppingList.add(Listing(name: "Vaskemiddel"));
+  shoppingList.add(Listing(name: "Dopapir"));
+  shoppingList.add(Listing(name: "Smør"));
+  shoppingList.add(Listing(name: "Zalo"));
+  shoppingList.add(Listing(name: "Løk"));
+  shoppingList[5].checked = true;
 }
 
 TextEditingController newItemController = TextEditingController();
 List<String> items = ["Dopapir"];
+List<Listing> shoppingList = [];
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -62,13 +77,17 @@ class _MyAppState extends State<MyApp> {
                         physics: const NeverScrollableScrollPhysics(),
                         // Inner listview must be not scrollable
                         shrinkWrap: true,
-                        itemCount: items.length,
+                        //itemCount: items.length,
+                        itemCount: shoppingList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
                             child: ListTile(
-                              title: Text(items[index]),
-                              trailing: Icon(Icons.done),
-                            ),
+                                // title: Text(items[index]),
+                                title: Text(shoppingList[index].name),
+                                //trailing: Icon(Icons.done),
+                                trailing: Icon(shoppingList[index].checked
+                                    ? Icons.done
+                                    : Icons.file_download_done)),
                           );
                         },
                       )
@@ -88,7 +107,7 @@ final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 /// Sends a snackbar to the user
 /// Clears the TextField
 void addToList() {
-  items.add(newItemController.text);
+  shoppingList.add(Listing(name: newItemController.text.toString()));
   sendSnackBar("${newItemController.text} lagt til!", Colors.green);
   newItemController.text = "";
 }
