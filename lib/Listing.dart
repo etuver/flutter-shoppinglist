@@ -1,6 +1,6 @@
-
-
-class Listing{
-  var name = "";
+class Listing {
+  String name;
   bool checked = false;
+
+  Listing({required this.name});
 }
