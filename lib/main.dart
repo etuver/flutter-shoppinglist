@@ -49,7 +49,6 @@ void main() {
   testShoppingList.sortListByChecked();
   //shoppingLists.add(testShoppingList);
   setEmptyList();
-
   //selectedList = shoppingLists[0];
 }
 
@@ -83,9 +82,20 @@ class _MyAppState extends State<MyApp> {
             ),
             body: Container(
               child: Column(children: <Widget>[
-                AppBar(
-                  title: Text(selectedList.listName),
-                ),
+                //AppBar(
+                // centerTitle: true,
+                // title: Text(selectedList.listName),
+                //),
+                MaterialButton(
+                    minWidth: 100000,
+                    height: 70,
+                    color: Colors.blue,
+                    onPressed: () {
+                      setState(() {
+                        addTestList();
+                      });
+                    },
+                    child: Text(selectedList.listName)),
                 Row(children: [
                   Expanded(
                       child: Padding(
@@ -210,6 +220,22 @@ void setEmptyList() {
     ShoppingList emptyList = ShoppingList(listName: "Ingen liste valgt");
     selectedList = emptyList;
   }
+}
+
+List<Tab> generateTabs() {
+  List<Tab> tabs = [];
+  for (int i = 0; i < shoppingLists.length; i++) {
+    tabs.add(Tab(
+      text: shoppingLists[i].listName,
+    ));
+  }
+  return tabs;
+}
+
+void addTestList() {
+  ShoppingList testList = ShoppingList(listName: "En list for test");
+  shoppingLists.add(testList);
+  selectedList = testList;
 }
 
 /**
