@@ -48,11 +48,7 @@ void main() {
   testShoppingList.changeCheckedStatus("Buljong");
   testShoppingList.sortListByChecked();
   //shoppingLists.add(testShoppingList);
-  if (shoppingLists.isNotEmpty) {
-    selectedList = shoppingLists[0];
-  } else {
-    selectedList = emptyList;
-  }
+  setEmptyList();
 
   //selectedList = shoppingLists[0];
 }
@@ -206,6 +202,14 @@ void sendSnackBar(String message, Color color) {
   ScaffoldMessenger.of(_scaffoldKey.currentState!.context)
       .showSnackBar(snackBar);
   //snackbarKey.currentState?.showSnackBar(snackBar);
+}
+
+void setEmptyList() {
+  if (shoppingLists.isNotEmpty) {
+    selectedList = shoppingLists[0];
+  } else {
+    selectedList = emptyList;
+  }
 }
 
 /**
