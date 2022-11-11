@@ -59,10 +59,9 @@ TextEditingController newItemController =
 //List<Listing> shoppingList = [];
 ShoppingList testShoppingList = ShoppingList(listName: "Handleliste");
 List<ShoppingList> shoppingLists = <ShoppingList>[];
-//ShoppingList selectedList = shoppingLists[0];
-ShoppingList selectedList = shoppingLists[0] ?? emptyList;
+ShoppingList selectedList = shoppingLists[0];
+//ShoppingList selectedList = shoppingLists[0] ?? emptyList;
 //ShoppingList selectedList = ShoppingList(listName: "listName");
-ShoppingList emptyList = ShoppingList(listName: "Ingen liste valgt");
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -208,6 +207,7 @@ void setEmptyList() {
   if (shoppingLists.isNotEmpty) {
     selectedList = shoppingLists[0];
   } else {
+    ShoppingList emptyList = ShoppingList(listName: "Ingen liste valgt");
     selectedList = emptyList;
   }
 }
