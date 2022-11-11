@@ -29,30 +29,44 @@ void main() {
   //shoppingList.add(Listing(name: "Zalo"));
   //shoppingList.add(Listing(name: "Løk"));
   //shoppingList[5].checked = true;
-  shoppingList.addListing(Listing(name: "Potet"));
-  shoppingList.addListing(Listing(name: "Gulrot"));
-  shoppingList.addListing(Listing(name: "Kjøtt"));
-  shoppingList.addListing(Listing(name: "Epler"));
-  shoppingList.addListing(Listing(name: "Buljong"));
-  shoppingList.addListing(Listing(name: "Egg"));
-  shoppingList.addListing(Listing(name: "Makaroni"));
-  shoppingList.addListing(Listing(name: "Brød"));
-  shoppingList.addListing(Listing(name: "Vaskemiddel"));
-  shoppingList.addListing(Listing(name: "Dopapir"));
-  shoppingList.addListing(Listing(name: "Smør"));
-  shoppingList.addListing(Listing(name: "Zalo"));
-  shoppingList.addListing(Listing(name: "Løk"));
-  shoppingList.changeCheckedStatus("Løk");
-  shoppingList.changeCheckedStatus("Vaskemiddel");
-  shoppingList.changeCheckedStatus("Egg");
-  shoppingList.changeCheckedStatus("Buljong");
-  shoppingList.sortListByChecked();
+  testShoppingList.addListing(Listing(name: "Potet"));
+  testShoppingList.addListing(Listing(name: "Gulrot"));
+  testShoppingList.addListing(Listing(name: "Kjøtt"));
+  testShoppingList.addListing(Listing(name: "Epler"));
+  testShoppingList.addListing(Listing(name: "Buljong"));
+  testShoppingList.addListing(Listing(name: "Egg"));
+  testShoppingList.addListing(Listing(name: "Makaroni"));
+  testShoppingList.addListing(Listing(name: "Brød"));
+  testShoppingList.addListing(Listing(name: "Vaskemiddel"));
+  testShoppingList.addListing(Listing(name: "Dopapir"));
+  testShoppingList.addListing(Listing(name: "Smør"));
+  testShoppingList.addListing(Listing(name: "Zalo"));
+  testShoppingList.addListing(Listing(name: "Løk"));
+  testShoppingList.changeCheckedStatus("Løk");
+  testShoppingList.changeCheckedStatus("Vaskemiddel");
+  testShoppingList.changeCheckedStatus("Egg");
+  testShoppingList.changeCheckedStatus("Buljong");
+  testShoppingList.sortListByChecked();
+  //shoppingLists.add(testShoppingList);
+  if (shoppingLists.isNotEmpty) {
+    selectedList = shoppingLists[0];
+  } else {
+    selectedList = emptyList;
+  }
+
+  //selectedList = shoppingLists[0];
 }
 
-TextEditingController newItemController = TextEditingController();
+TextEditingController newItemController =
+    TextEditingController(); // add new item to list
 //List<String> items = ["Dopapir"];
 //List<Listing> shoppingList = [];
-ShoppingList shoppingList = ShoppingList(listName: "Handleliste");
+ShoppingList testShoppingList = ShoppingList(listName: "Handleliste");
+List<ShoppingList> shoppingLists = <ShoppingList>[];
+//ShoppingList selectedList = shoppingLists[0];
+ShoppingList selectedList = shoppingLists[0] ?? emptyList;
+//ShoppingList selectedList = ShoppingList(listName: "listName");
+ShoppingList emptyList = ShoppingList(listName: "Ingen liste valgt");
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -74,65 +88,90 @@ class _MyAppState extends State<MyApp> {
             ),
             body: Container(
               child: Column(children: <Widget>[
+                AppBar(
+                  title: Text(selectedList.listName),
+                ),
                 Row(children: [
                   Expanded(
-                      child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: "Varenavn",
-                      border: OutlineInputBorder(),
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: "Varenavn",
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: newItemController,
                     ),
-                    controller: newItemController,
                   )),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (newItemController.text.isNotEmpty) {
-                          setState(() {
-                            addToList();
-                          });
-                        }
-                      },
-                      child: const Text("Legg til"))
-                ]),
-                Expanded(
-                  child: ListView(
-                    //scrollDirection: Axis.vertical,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    //scrollDirection: Axis.vertical,
-                    children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        // Inner listview must be not scrollable
-                        shrinkWrap: true,
-                        //itemCount: items.length,
-                        //itemCount: shoppingList.length,
-                        itemCount: shoppingList.getListingsLength(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            child: ListTile(
-                              onTap: () {
-                                setState(() {
-                                  shoppingList.changeCheckedStatus(
-                                      shoppingList.listings[index].name);
-                                });
-                              },
-                              // title: Text(items[index]),
-                              title: Text(shoppingList.listings[index].name),
-                              //trailing: Icon(Icons.done),
-                              trailing: Icon(
-                                  shoppingList.listings[index].checked
-                                      ? Icons.done
-                                      : Icons.file_download_done),
-                              tileColor: shoppingList.listings[index].checked
-                                  ? Color(0xFF9E9E9E) //Color(0xFF84FFFF)
-                                  : null,
-                              //: Color(0xFF9E9E9E),
-                            ),
-                          );
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          if (newItemController.text.isNotEmpty &&
+                              selectedList.listName != "Ingen liste valgt") {
+                            setState(() {
+                              addToList();
+                            });
+                          }
                         },
+                        // child: const Text("Legg til")),
+                        child: const Icon(Icons.add)),
+                  )
+                ]),
+                selectedList.getListingsLength() == 0
+                    ? const Padding(
+                        padding: EdgeInsets.all(30.0),
+                        child: Center(
+                          child: Text("Ingen varer er lagt til"),
+                        ),
                       )
-                    ],
-                  ),
-                )
+                    : Expanded(
+                        child: ListView(
+                          //scrollDirection: Axis.vertical,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          //scrollDirection: Axis.vertical,
+                          children: [
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              // Inner listview must be not scrollable
+                              shrinkWrap: true,
+                              //itemCount: items.length,
+                              //itemCount: shoppingList.length,
+                              itemCount: selectedList.getListingsLength(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Card(
+                                  child: ListTile(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedList.changeCheckedStatus(
+                                            selectedList.listings[index].name);
+
+                                        ///Change checked status on tap
+                                      });
+                                    },
+                                    // title: Text(items[index]),
+                                    title:
+                                        Text(selectedList.listings[index].name),
+                                    //trailing: Icon(Icons.done),
+                                    trailing: Icon(
+                                        selectedList.listings[index].checked
+                                            ? Icons.done
+                                            : Icons.file_download_done),
+                                    tileColor: selectedList
+                                            .listings[index].checked
+
+                                        /// white if not checked, greyed out if checked
+                                        ? const Color(
+                                            0xFF9E9E9E) //Color(0xFF84FFFF)
+                                        : null,
+                                    //: Color(0xFF9E9E9E),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      )
               ]),
             )));
   }
@@ -147,7 +186,7 @@ final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 /// Clears the TextField
 void addToList() {
   //shoppingList.add(Listing(name: newItemController.text.toString()));
-  shoppingList.addListing(Listing(name: newItemController.text.toString()));
+  selectedList.addListing(Listing(name: newItemController.text.toString()));
   sendSnackBar("${newItemController.text} lagt til!", Colors.green);
   newItemController.text = "";
 }
