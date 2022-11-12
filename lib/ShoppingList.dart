@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
-
 import 'Listing.dart';
 
+/// Class representing a ShoppingList
+/// String listName as
+/// and a list of Listing's
 class ShoppingList {
   String listName;
   List<Listing> listings = <Listing>[];
@@ -59,6 +60,7 @@ class ShoppingList {
     sortListByChecked();
   }
 
+  /// Removes all listings where checked == true
   void removeCheckedListings() {
     listings.removeWhere((listing) => listing.checked == true);
   }
