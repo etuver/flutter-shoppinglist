@@ -1,0 +1,30 @@
+{
+  "listName": "Evens liste",
+  "listings": [
+    {"name":"Brød",
+      "checked": false
+    },
+    {"name":"Melk",
+      "checked": false
+    },
+    {"name":  "Kaffe",
+      "checked": false
+    },
+    {"name":  "Sukker",
+      "checked": true
+    },
+    {"name":  "Maoam",
+      "checked": false
+    },
+    {"name":  "Dopapir",
+      "checked": true
+    },
+    {"name":  "Te",
+      "checked": false
+    }
+  ]
+
+
+
+
+}

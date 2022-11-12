@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'Listing.dart';
 import 'ShoppingList.dart';
+import 'FileManager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,6 +60,15 @@ void main() {
   //} else {
   //  selectedList = shoppingLists[0];
   //}
+  //ShoppingList yes = loadJsonData() as ShoppingList;
+  //shoppingLists.add(yes);
+  //loadJsonData();
+}
+
+void getJasonData() {
+  Future<ShoppingList> future = getJsonData();
+  future.then((value) => shoppingLists.add(value));
+  setFirstListOrEmptyList();
 }
 
 TextEditingController newItemController = TextEditingController();
@@ -85,6 +97,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  initState() {
+    getJasonData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
