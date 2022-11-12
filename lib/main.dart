@@ -66,9 +66,15 @@ void main() {
 }
 
 void getJasonData() {
-  Future<ShoppingList> future = getJsonData();
-  future.then((value) => shoppingLists.add(value));
+  //setFirstListOrEmptyList();
+  Future<List<ShoppingList>> future = readAllJsonFiles();
+  future.then((value) => shoppingLists = value);
   setFirstListOrEmptyList();
+  //Future<ShoppingList> future = getJsonData();
+  //future.then((value) => shoppingLists.add(value));
+  //future.then((value) => shoppingLists = value);
+
+  //readAllJsonFiles();
 }
 
 TextEditingController newItemController = TextEditingController();
@@ -99,7 +105,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   initState() {
-    getJasonData();
+    setState(() {
+      getJasonData();
+      setFirstListOrEmptyList();
+    });
     super.initState();
   }
 
