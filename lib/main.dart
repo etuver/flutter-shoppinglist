@@ -94,13 +94,33 @@ class _MyAppState extends State<MyApp> {
             appBar: AppBar(
               backgroundColor: Color(0xffb74093),
               title: const Text('Shopping List'),
+              actions: [
+                PopupMenuButton(
+                  icon: const Icon(Icons.menu),
+                  itemBuilder: (context) {
+                    return [
+                      const PopupMenuItem<int>(
+                          value: 0, child: Text("Slett denne listen")),
+                      const PopupMenuItem<int>(
+                          value: 1, child: Text("Fjern markerte varer")),
+                    ];
+                  },
+                  onSelected: (value) {
+                    if (value == 0) {
+                      setState(() {
+                        removeShoppingList(selectedList.listName);
+                      });
+                    } else if (value == 1) {
+                      setState(() {
+                        selectedList.removeCheckedListings();
+                      });
+                    }
+                  },
+                )
+              ],
             ),
             body: Container(
               child: Column(children: <Widget>[
-                //AppBar(
-                // centerTitle: true,
-                // title: Text(selectedList.listName),
-                //),
                 Builder(
                     builder: (context) => Center(
                           child: shoppingLists.isEmpty
@@ -351,7 +371,7 @@ void sendSnackBar(String message, Color color) {
 /// Creates a empty list with placeholder name,
 /// not good solution, only for testing
 
-void setEmptyList() {
+void setFirstListOrEmptyList() {
   if (shoppingLists.isNotEmpty) {
     selectedList = shoppingLists[0];
   } else {
@@ -513,6 +533,12 @@ void addNewList(String listName) {
       }
     }
   }
+}
+
+void removeShoppingList(String listName) {
+  shoppingLists
+      .removeWhere((shoppinglist) => shoppinglist.listName == listName);
+  setFirstListOrEmptyList();
 }
 
 /// Get a list of listnames for the scrollpicker dialog
