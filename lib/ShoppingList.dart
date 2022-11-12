@@ -58,4 +58,8 @@ class ShoppingList {
     }
     sortListByChecked();
   }
+
+  void removeCheckedListings() {
+    listings.removeWhere((listing) => listing.checked == true);
+  }
 }
