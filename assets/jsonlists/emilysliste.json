@@ -1,0 +1,34 @@
+{
+  "listName": "Emilys liste",
+  "listings": [
+    {
+      "name": "Maoam",
+      "checked": false
+    },
+    {
+      "name": "Sjokoladeappelsin",
+      "checked": false
+    },
+    {
+      "name": "Superchips",
+      "checked": false
+    },
+    {
+      "name": "Proteinpulver",
+      "checked": true
+    },
+    {
+      "name": "Multivitamin",
+      "checked": false
+    },
+    {
+      "name": "Klær på salg",
+      "checked": true
+    },
+    {
+      "name": "Fribol",
+      "checked": false
+    }
+  ]
+}
+

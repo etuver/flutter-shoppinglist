@@ -1,0 +1,33 @@
+{
+  "listName": "Hytta",
+  "listings": [
+    {
+      "name": "Mat fredag",
+      "checked": false
+    },
+    {
+      "name": "Mat lørdag",
+      "checked": false
+    },
+    {
+      "name": "Mat søndag",
+      "checked": false
+    },
+    {
+      "name": "Bensin til båten",
+      "checked": true
+    },
+    {
+      "name": "Krabbeteiner",
+      "checked": false
+    },
+    {
+      "name": "Aluminiumsfolie",
+      "checked": true
+    },
+    {
+      "name": "Fiskesluker",
+      "checked": false
+    }
+  ]
+}

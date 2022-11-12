@@ -1,0 +1,33 @@
+{
+  "listName": "Dagligvarer",
+  "listings": [
+    {
+      "name": "Salt",
+      "checked": false
+    },
+    {
+      "name": "Pepper",
+      "checked": false
+    },
+    {
+      "name": "Paprika",
+      "checked": false
+    },
+    {
+      "name": "Sukker",
+      "checked": true
+    },
+    {
+      "name": "Vaskemiddel",
+      "checked": false
+    },
+    {
+      "name": "Dopapir",
+      "checked": true
+    },
+    {
+      "name": "Smør",
+      "checked": false
+    }
+  ]
+}
