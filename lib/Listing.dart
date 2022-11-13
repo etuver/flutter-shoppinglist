@@ -6,4 +6,15 @@ class Listing {
   bool checked = false;
 
   Listing({required this.name});
+
+  Map toJson() => {
+        "name": name,
+        "Checked": checked,
+      };
+
+  factory Listing.fromJson(dynamic json) {
+    Listing listing = Listing(name: json["name"]);
+    listing.checked = json['Checked'];
+    return listing;
+  }
 }
