@@ -67,7 +67,7 @@ void main() {
 
 void getJasonData() {
   //setFirstListOrEmptyList();
-  Future<List<ShoppingList>> future = readAllJsonFiles();
+  Future<List<ShoppingList>> future = readJsonFiles();
   future.then((value) => shoppingLists = value);
   setFirstListOrEmptyList();
   //Future<ShoppingList> future = getJsonData();
@@ -75,6 +75,7 @@ void getJasonData() {
   //future.then((value) => shoppingLists = value);
 
   //readAllJsonFiles();
+  //writeListAsJSONFile(selectedList);
 }
 
 TextEditingController newItemController = TextEditingController();
@@ -108,6 +109,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       getJasonData();
       setFirstListOrEmptyList();
+      readJsonFiles();
     });
     super.initState();
   }
@@ -130,17 +132,27 @@ class _MyAppState extends State<MyApp> {
                           value: 0, child: Text("Slett denne listen")),
                       const PopupMenuItem<int>(
                           value: 1, child: Text("Fjern markerte varer")),
+                      const PopupMenuItem<int>(
+                          value: 2, child: Text("skriv liste til fil")),
+                      const PopupMenuItem<int>(
+                          value: 3, child: Text("print json filer")),
                     ];
                   },
                   onSelected: (value) {
                     if (value == 0) {
                       setState(() {
-                        removeShoppingList(selectedList.listName);
+                        //removeShoppingList(selectedList.listName);
+                        print("lengde på lista: $shoppingLists.length()");
                       });
                     } else if (value == 1) {
                       setState(() {
                         selectedList.removeCheckedListings();
+                        writeListAsJSONFile(selectedList);
                       });
+                    } else if (value == 2) {
+                      writeListAsJSONFile(selectedList);
+                    } else if (value == 3) {
+                      readJsonFiles();
                     }
                   },
                 )
@@ -401,6 +413,7 @@ void sendSnackBar(String message, Color color) {
 void setFirstListOrEmptyList() {
   if (shoppingLists.isNotEmpty) {
     selectedList = shoppingLists[0];
+    print(convertToJSON(selectedList));
   } else {
     ShoppingList emptyList = ShoppingList(listName: "Ingen liste valgt");
     selectedList = emptyList;
