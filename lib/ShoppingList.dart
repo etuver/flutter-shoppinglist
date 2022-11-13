@@ -64,4 +64,25 @@ class ShoppingList {
   void removeCheckedListings() {
     listings.removeWhere((listing) => listing.checked == true);
   }
+
+  Map toJson() => {
+        "listname": listName,
+        "listings": listings,
+      };
+
+  factory ShoppingList.fromJson(dynamic json) {
+    ShoppingList shoppingList = ShoppingList(listName: json["listname"]);
+    List<Listing> listingsfromJson = <Listing>[];
+    List<dynamic> jsonListings = List.from(json['listings']);
+
+    //print(jsonListings);
+
+    for (int i = 0; i < jsonListings.length; i++) {
+      listingsfromJson.add(Listing.fromJson(jsonListings[i]));
+    }
+
+    //listingsfromJson = json["listings"];
+    shoppingList.listings = listingsfromJson;
+    return shoppingList;
+  }
 }
