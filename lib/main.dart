@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'Listing.dart';
@@ -40,8 +42,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   initState() {
-    getJasonData();
     super.initState();
+    getJasonData();
+    Future.delayed(const Duration(milliseconds: 1300), () {
+      setState(() {
+        setFirstListOrEmptyList();
+      });
+    });
   }
 
   @override
