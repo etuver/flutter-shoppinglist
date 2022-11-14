@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   initState() {
     super.initState();
     getJasonData();
-    Future.delayed(const Duration(milliseconds: 1300), () {
+    Future.delayed(const Duration(milliseconds: 1100), () {
       setState(() {
         setFirstListOrEmptyList();
       });
@@ -284,8 +284,8 @@ class _MyAppState extends State<MyApp> {
 
                                         /// Changes icon based on item is checked or not
                                         selectedList.listings[index].checked
-                                            ? Icons.done
-                                            : Icons.file_download_done),
+                                            ? Icons.check_box_outlined
+                                            : Icons.check_box_outline_blank),
                                     tileColor: selectedList
                                             .listings[index].checked
 
