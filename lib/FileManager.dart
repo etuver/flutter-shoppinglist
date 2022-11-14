@@ -5,19 +5,15 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shoppinglist/ShoppingList.dart';
-import 'package:shoppinglist/main.dart';
 
 import 'Listing.dart';
 
 /// REads a single json-file from given path and returns as a ShoppingList object
+/// the json string is decoded by the ShoppingList class
 Future<ShoppingList> getShoppingListFromJsonFile(String filepath) async {
   final file = File(filepath);
   final json = await file.readAsString();
-  var data = jsonDecode(json);
-  //String listname = data['listname'];
-  //print("json: " + data);
   ShoppingList shoppingList = ShoppingList.fromJson(jsonDecode(json));
-  print("shoppinglist: " + shoppingList.listName);
   return shoppingList;
 }
 
@@ -28,27 +24,33 @@ Future<ShoppingList> getShoppingListFromJsonFile(String filepath) async {
 Future<List<ShoppingList>> readJsonFiles() async {
   List<ShoppingList> list = [];
   List<String> files = [];
+
+  /// Gets the documents directory on the device. directory path is dependent on device type
   final directory = await getApplicationDocumentsDirectory();
+
+  /// Gets all files in directory where file is .json type
   List<FileSystemEntity> entities = await directory
       .list()
       .where((event) => event.path.endsWith('.json'))
       .toList();
-  //final Iterable<File> files = entities.whereType<File>();
 
+  /// Creates a list of path strings from entities
   for (int i = 0; i < entities.length; i++) {
     files.add(entities[i].path);
   }
+
+  ///Use the above method to read each file and put them in list
   for (int i = 0; i < files.length; i++) {
     Future<ShoppingList> future = getShoppingListFromJsonFile(files[i]);
     future.then((value) => list.add(value));
   }
-  //files.forEach(print);
   return list;
 }
 
 /// write a shoppingList as a json file
 /// saved in appdata directory
 /// path depending on device type
+/// Takes the shoppingList object and encodes it to json
 void writeListAsJSONFile(ShoppingList shoppingList) async {
   try {
     final directory = await getApplicationDocumentsDirectory();
@@ -56,7 +58,6 @@ void writeListAsJSONFile(ShoppingList shoppingList) async {
     File file = File("${directory.path}/$filename");
     String jsonShoppingList = jsonEncode(shoppingList);
     file.writeAsString(jsonShoppingList);
-    print("List write to file");
   } catch (e) {
     print(e);
   }
@@ -76,15 +77,19 @@ void deleteJsonfile(String listName) async {
 }
 
 /// encode a shoppinglist to Json object
+/// Not in use atm
 String convertToJSON(ShoppingList shoppingList) {
   String jsonShoppingList = jsonEncode(shoppingList);
   return jsonShoppingList;
 }
 
+///---------------------- OLD -----------------------------------------
+
 /// Creates a list of all jsonfiles in directory assets/jsonlists
 /// Then calls method getJsonDataByFilePath to get each file read as a ShoppingList
 /// returns a Future List of Shoppinglists
 /// Fin plass å bruk lørdagskvelden med influensa
+/// Not in use
 Future<List<ShoppingList>> readAllJsonFiles() async {
   List<ShoppingList> list = [];
   final files = json
@@ -102,6 +107,7 @@ Future<List<ShoppingList>> readAllJsonFiles() async {
 }
 
 /// reads a single jsonfile and returns as Shoppinglist
+/// Not in use
 Future<ShoppingList> getJsonDataByFilePath(String filepath) async {
   List<Listing> listings = <Listing>[];
   var jsonString = await rootBundle.loadString(filepath);
@@ -125,8 +131,6 @@ Future<ShoppingList> getJsonDataByFilePath(String filepath) async {
   }
   return shoppingList;
 }
-
-/////////////////////////////////////////////// OLD ////////////////////////////////////
 
 ///reads a single json file and returnds as future shoppinglist
 ///Not in use

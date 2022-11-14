@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'Listing.dart';
@@ -8,93 +6,28 @@ import 'FileManager.dart';
 
 void main() {
   runApp(const MyApp());
-  //items.add("Potet");
-  //items.add("Gulrot");
-  //items.add("Kjøtt");
-  //items.add("Epler");
-  //items.add("Buljong");
-  //items.add("Egg");
-  //items.add("Makaroni");
-  //items.add("Dopapir");
-  //items.add("Vaskemiddel");
-  //items.add("Smør");
-  //items.add("Zalo");
-  //shoppingList.add(Listing(name: "Potet"));
-  //shoppingList.add(Listing(name: "Gulrot"));
-  //shoppingList.add(Listing(name: "Kjøtt"));
-  //shoppingList.add(Listing(name: "Epler"));
-  //shoppingList.add(Listing(name: "Buljong"));
-  //shoppingList.add(Listing(name: "Egg"));
-  //shoppingList.add(Listing(name: "Makaroni"));
-  //shoppingList.add(Listing(name: "Brød"));
-  //shoppingList.add(Listing(name: "Vaskemiddel"));
-  //shoppingList.add(Listing(name: "Dopapir"));
-  //shoppingList.add(Listing(name: "Smør"));
-  //shoppingList.add(Listing(name: "Zalo"));
-  //shoppingList.add(Listing(name: "Løk"));
-  //shoppingList[5].checked = true;
-  //testShoppingList.addListing(Listing(name: "Potet"));
-  //testShoppingList.addListing(Listing(name: "Gulrot"));
-  //testShoppingList.addListing(Listing(name: "Kjøtt"));
-  //testShoppingList.addListing(Listing(name: "Epler"));
-  //testShoppingList.addListing(Listing(name: "Buljong"));
-  //testShoppingList.addListing(Listing(name: "Egg"));
-  //testShoppingList.addListing(Listing(name: "Makaroni"));
-  //testShoppingList.addListing(Listing(name: "Brød"));
-  //testShoppingList.addListing(Listing(name: "Vaskemiddel"));
-  //testShoppingList.addListing(Listing(name: "Dopapir"));
-  //testShoppingList.addListing(Listing(name: "Smør"));
-  //testShoppingList.addListing(Listing(name: "Zalo"));
-  //testShoppingList.addListing(Listing(name: "Løk"));
-  //testShoppingList.changeCheckedStatus("Løk");
-  //testShoppingList.changeCheckedStatus("Vaskemiddel");
-  //testShoppingList.changeCheckedStatus("Egg");
-  //testShoppingList.changeCheckedStatus("Buljong");
-  //testShoppingList.sortListByChecked();
-  //shoppingLists.add(testShoppingList);
-  //setEmptyList();
-  //addTestList();
-  //selectedList = shoppingLists[0];
-  //if (shoppingLists.isEmpty) {
-  // setEmptyList();
-  //} else {
-  //  selectedList = shoppingLists[0];
-  //}
-  //ShoppingList yes = loadJsonData() as ShoppingList;
-  //shoppingLists.add(yes);
-  //loadJsonData();
 }
 
-void getJasonData() {
-  //setFirstListOrEmptyList();
-  Future<List<ShoppingList>> future = readJsonFiles();
-  future.then((value) => shoppingLists = value);
-  setFirstListOrEmptyList();
-  //Future<ShoppingList> future = getJsonData();
-  //future.then((value) => shoppingLists.add(value));
-  //future.then((value) => shoppingLists = value);
-
-  //readAllJsonFiles();
-  //writeListAsJSONFile(selectedList);
-}
-
+/// add new item/Listing to list controller
 TextEditingController newItemController = TextEditingController();
 
-/// add new item to list
-
+/// Add new list controller
 TextEditingController newListController = TextEditingController();
 
-/// Add new list
-//List<String> items = ["Dopapir"];
-//List<Listing> shoppingList = [];
-//ShoppingList testShoppingList = ShoppingList(listName: "Handleliste");
+/// a list containing all the shoppingLists
 List<ShoppingList> shoppingLists = <ShoppingList>[];
-//ShoppingList selectedList = shoppingLists[0] ?? ShoppingList(listName: "Ingen liste valgt");
+
+/// The selected shoppinglist
+/// If shoppingLists is empty, create a placeholder list
 ShoppingList selectedList = shoppingLists.isNotEmpty
     ? shoppingLists[0]
-    : ShoppingList(listName: "Ingen liste valgt");
+    : ShoppingList(listName: "Velg liste");
+//ShoppingList selectedList = shoppingLists[0] ?? ShoppingList(listName: "Ingen liste valgt");
 //ShoppingList selectedList = shoppingLists[0] ?? emptyList;
-//ShoppingList selectedList = ShoppingList(listName: "listName");
+
+/// Scaffold key for snackbar
+/// Uses key from Scaffold in _MyAppState
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -103,14 +36,11 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+/// Load json files on initstate and into shoppinglists
 class _MyAppState extends State<MyApp> {
   @override
   initState() {
-    setState(() {
-      getJasonData();
-      setFirstListOrEmptyList();
-      readJsonFiles();
-    });
+    getJasonData();
     super.initState();
   }
 
@@ -121,45 +51,41 @@ class _MyAppState extends State<MyApp> {
         home: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              backgroundColor: Color(0xffb74093),
+              backgroundColor: const Color(0xffb74093),
               title: const Text('Shopping List'),
               actions: [
+                /// Menu butten in the appbar, has two options: delete list and
+                /// clear checked listings in selected list
                 PopupMenuButton(
-                  icon: const Icon(Icons.menu),
-                  itemBuilder: (context) {
-                    return [
-                      const PopupMenuItem<int>(
-                          value: 0, child: Text("Slett denne listen")),
-                      const PopupMenuItem<int>(
-                          value: 1, child: Text("Fjern markerte varer")),
-                      const PopupMenuItem<int>(
-                          value: 2, child: Text("skriv liste til fil")),
-                      const PopupMenuItem<int>(
-                          value: 3, child: Text("print json filer")),
-                    ];
-                  },
-                  onSelected: (value) {
-                    if (value == 0) {
-                      setState(() {
-                        //removeShoppingList(selectedList.listName);
-                        print("lengde på lista: $shoppingLists.length()");
-                      });
-                    } else if (value == 1) {
-                      setState(() {
-                        selectedList.removeCheckedListings();
-                        writeListAsJSONFile(selectedList);
-                      });
-                    } else if (value == 2) {
-                      writeListAsJSONFile(selectedList);
-                    } else if (value == 3) {
-                      readJsonFiles();
-                    }
-                  },
-                )
+                    icon: const Icon(Icons.menu),
+                    itemBuilder: (context) {
+                      return [
+                        const PopupMenuItem<int>(
+                            value: 0, child: Text("Slett denne listen")),
+                        const PopupMenuItem<int>(
+                            value: 1, child: Text("Fjern markerte varer")),
+                      ];
+                    },
+                    onSelected: (value) {
+                      if (value == 0) {
+                        setState(() {
+                          removeShoppingList(selectedList.listName);
+                        });
+                      } else if (value == 1) {
+                        setState(() {
+                          selectedList.removeCheckedListings();
+                          writeListAsJSONFile(selectedList);
+                        });
+                      }
+                    })
               ],
             ),
             body: Container(
               child: Column(children: <Widget>[
+                /// Shows a header which works as a button
+                /// if there are no shoppinglists shows a button to create a new list
+                /// if there are shoppinglists but none are selected show a button to select a list
+                /// otherwise shows name of current list
                 Builder(
                     builder: (context) => Center(
                           child: shoppingLists.isEmpty
@@ -169,7 +95,6 @@ class _MyAppState extends State<MyApp> {
                                   color: Colors.blue,
                                   onPressed: () {
                                     setState(() {
-                                      //openAddListDialog();
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -231,6 +156,7 @@ class _MyAppState extends State<MyApp> {
                                                       context: context,
                                                       builder: (BuildContext
                                                           context) {
+                                                        /// Alert dialog with inputfield for name to create new list
                                                         return AlertDialog(
                                                           title: const Text(
                                                               "Legg til liste"),
@@ -272,13 +198,10 @@ class _MyAppState extends State<MyApp> {
                                                           ],
                                                         );
                                                       })
-                                                  :
-                                                  //handleListPicker(value),
-                                                  handleListPicker(
+                                                  : handleListPicker(
                                                       value, context)
                                             }),
                                       );
-                                      //openListPicker(context);
                                     });
                                   },
                                   child: Text(selectedList.listName)),
@@ -289,7 +212,7 @@ class _MyAppState extends State<MyApp> {
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
 
-                    /// Text field for new listing
+                    /// Text field for adding a new listing
                     child: TextField(
                       decoration: const InputDecoration(
                         hintText: "Varenavn",
@@ -305,18 +228,18 @@ class _MyAppState extends State<MyApp> {
                     child: ElevatedButton(
                         onPressed: () {
                           if (newItemController.text.isNotEmpty &&
-                              selectedList.listName != "Ingen liste valgt") {
+                              selectedList.listName != "Velg liste") {
                             setState(() {
                               addToList();
                             });
                           }
                         },
-                        // child: const Text("Legg til")),
                         child: const Icon(Icons.add)),
                   )
                 ]),
 
-                /// Show placeholder if list is empty / no list
+                /// Show placeholder if there is no selectedList or if
+                /// shoppingLists is empty or null
                 selectedList.getListingsLength() == 0 || shoppingLists.isEmpty
                     ? const Padding(
                         padding: EdgeInsets.all(30.0),
@@ -324,35 +247,35 @@ class _MyAppState extends State<MyApp> {
                           child: Text("Ingen varer er lagt til"),
                         ),
                       )
-                    : Expanded(
+                    :
+
+                    /// If there is a list selected shows a ListView with listings
+                    Expanded(
                         child: ListView(
-                          //scrollDirection: Axis.vertical,
                           physics: const AlwaysScrollableScrollPhysics(),
-                          //scrollDirection: Axis.vertical,
                           children: [
                             ListView.builder(
+                              /// Inner listview must be not scrollable
                               physics: const NeverScrollableScrollPhysics(),
-                              // Inner listview must be not scrollable
                               shrinkWrap: true,
-                              //itemCount: items.length,
-                              //itemCount: shoppingList.length,
                               itemCount: selectedList.getListingsLength(),
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
                                   child: ListTile(
                                     onTap: () {
                                       setState(() {
+                                        ///Change checked status on tap
+                                        ///And re-write the list to json  to save
                                         selectedList.changeCheckedStatus(
                                             selectedList.listings[index].name);
-
-                                        ///Change checked status on tap
+                                        writeListAsJSONFile(selectedList);
                                       });
                                     },
-                                    // title: Text(items[index]),
                                     title:
                                         Text(selectedList.listings[index].name),
-                                    //trailing: Icon(Icons.done),
                                     trailing: Icon(
+
+                                        /// Changes icon based on item is checked or not
                                         selectedList.listings[index].checked
                                             ? Icons.done
                                             : Icons.file_download_done),
@@ -363,7 +286,6 @@ class _MyAppState extends State<MyApp> {
                                         ? const Color(
                                             0xFF9E9E9E) //Color(0xFF84FFFF)
                                         : null,
-                                    //: Color(0xFF9E9E9E),
                                   ),
                                 );
                               },
@@ -376,18 +298,22 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-/// Scaffold key for snackbar
-/// Uses key from Scaffold in _MyAppState
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+/// Loads data from json files into shoppingLists
+/// run at start - initstate
+void getJasonData() {
+  Future<List<ShoppingList>> future = readJsonFiles();
+  future.then((value) => shoppingLists = value);
+  setFirstListOrEmptyList();
+}
 
 /// Add an item to the list
 /// Sends a snackbar to the user
 /// Clears the TextField
 void addToList() {
-  //shoppingList.add(Listing(name: newItemController.text.toString()));
   selectedList.addListing(Listing(name: newItemController.text.toString()));
   sendSnackBar("${newItemController.text} lagt til!", Colors.green);
   newItemController.text = "";
+  writeListAsJSONFile(selectedList);
 }
 
 /// Sends a toast / snackbar with
@@ -404,70 +330,22 @@ void sendSnackBar(String message, Color color) {
   );
   ScaffoldMessenger.of(_scaffoldKey.currentState!.context)
       .showSnackBar(snackBar);
-  //snackbarKey.currentState?.showSnackBar(snackBar);
 }
 
-/// Creates a empty list with placeholder name,
-/// not good solution, only for testing
-
+/// Tries to set first list of shoppinglists as selectedList
+/// Creates a empty list with placeholder name if shoppinglists is empty
+/// used for when a shoppinglist is deleted and on start
 void setFirstListOrEmptyList() {
   if (shoppingLists.isNotEmpty) {
     selectedList = shoppingLists[0];
-    print(convertToJSON(selectedList));
   } else {
-    ShoppingList emptyList = ShoppingList(listName: "Ingen liste valgt");
+    ShoppingList emptyList = ShoppingList(listName: "Velg liste");
     selectedList = emptyList;
   }
 }
 
-/// generate tabs for tabbar, not in use
-List<Tab> generateTabs() {
-  List<Tab> tabs = [];
-  for (int i = 0; i < shoppingLists.length; i++) {
-    tabs.add(Tab(
-      text: shoppingLists[i].listName,
-    ));
-  }
-  return tabs;
-}
-
-/// Adds a test list to shoppinglists
-void addTestList() {
-  ShoppingList testList = ShoppingList(listName: "En list for test");
-  shoppingLists.add(testList);
-  selectedList = testList;
-}
-
-/// Not in use
-void openSimpleDialogSelector(BuildContext context) {
-  showDialog(
-      context: context,
-      builder: (_) => const AlertDialog(
-            title: Text("yeye"),
-            content: Text("yes"),
-          ));
-}
-
-/// Old version
-/// not in use
-void openListPicker(BuildContext context) {
-  List<String> items = getScrollpickerItems();
-  showMaterialScrollPicker<String>(
-    title: "Velg handleliste",
-    context: context,
-    items: items,
-    selectedItem: items[0],
-    onChanged: (value) => {
-      //handleListPicker(value),
-      _scaffoldKey.currentState?.setState(() {
-        handleListPicker(value, context);
-      })
-    },
-  );
-  _scaffoldKey.currentState?.setState(() {});
-}
-
 /// Checks if a list by listname already exists
+/// returns true if exists, false if not
 bool checkIfListExists(String listName) {
   for (int i = 0; i < shoppingLists.length; i++) {
     if (shoppingLists[i].listName == listName) {
@@ -477,25 +355,9 @@ bool checkIfListExists(String listName) {
   return false;
 }
 
-/// Old version
-/// Not in use
-void handleListPicker2(String picked) {
-  bool found = false;
-  for (int i = 0; i < shoppingLists.length; i++) {
-    if (shoppingLists[i].listName == picked) {
-      selectedList = shoppingLists[i];
-      found = true;
-    }
-  }
-  if (!found && picked == "Opprett ny liste") {
-    if (!checkIfListExists(picked)) {
-      shoppingLists.add(ShoppingList(listName: "listeliste"));
-    }
-  }
-  //_scaffoldKey.currentState?.setState(() {});
-}
-
 /// Handles the listPicker dialog
+/// Gets a string with selected listName
+/// and sets it as selectedList if it exists
 void handleListPicker(String picked, BuildContext context) {
   if (checkIfListExists(picked)) {
     for (int i = 0; i < shoppingLists.length; i++) {
@@ -504,6 +366,66 @@ void handleListPicker(String picked, BuildContext context) {
       }
     }
   }
+}
+
+/// Add new list to shoppingLists
+/// And sets it as selectedlist
+/// Also saves the new file as a json file
+void addNewList(String listName) {
+  if (!checkIfListExists(listName) && listName.isNotEmpty) {
+    shoppingLists.add(ShoppingList(listName: listName));
+    sendSnackBar("$listName lagt til!", Colors.green);
+    for (int i = 0; i < shoppingLists.length; i++) {
+      if (shoppingLists[i].listName == listName) {
+        selectedList = shoppingLists[i];
+      }
+    }
+  }
+  writeListAsJSONFile(selectedList);
+}
+
+/// Removes a shoppingList by string listName and deletes the json file
+void removeShoppingList(String listName) {
+  shoppingLists
+      .removeWhere((shoppinglist) => shoppinglist.listName == listName);
+  setFirstListOrEmptyList();
+  deleteJsonfile(listName);
+}
+
+/// Get a list of listnames for the scrollpicker dialog
+/// Also adds the option to create new shoppingList
+List<String> getScrollpickerItems() {
+  List<String> list = [];
+  list.add("Opprett ny liste");
+  for (int i = 0; i < shoppingLists.length; i++) {
+    list.add(shoppingLists[i].listName);
+  }
+  return list;
+}
+
+///------------------- OLD NOT IN USE ---------------------------------
+
+/// Opens a dialog with input field for a new list
+/// not in use
+void openAddListDialog_OLD() {
+  AlertDialog(
+    title: const Text("Legg til liste"),
+    content: TextField(
+      decoration: const InputDecoration(
+        hintText: "Listenavn",
+        border: OutlineInputBorder(),
+      ),
+      controller: newListController,
+    ),
+    actions: <Widget>[
+      TextButton(onPressed: () {}, child: const Text("Avbryt")),
+      TextButton(
+          onPressed: () {
+            addNewList(newListController.text);
+          },
+          child: const Text("Legg til"))
+    ],
+  );
 }
 
 /// Open a dialog to add new liste
@@ -538,87 +460,68 @@ void openAddListDialog(BuildContext context) {
       });
 }
 
-/// Opens a dialog with input field for a new list
-/// not in use
-void openAddListDialog_OLD() {
-  AlertDialog(
-    title: const Text("Legg til liste"),
-    content: TextField(
-      decoration: const InputDecoration(
-        hintText: "Listenavn",
-        border: OutlineInputBorder(),
-      ),
-      controller: newListController,
-    ),
-    actions: <Widget>[
-      TextButton(onPressed: () {}, child: const Text("Avbryt")),
-      TextButton(
-          onPressed: () {
-            addNewList(newListController.text);
-          },
-          child: const Text("Legg til"))
-    ],
-  );
-}
-
-/// Add new list to shoppingLists
-/// And sets it as selectedlist
-void addNewList(String listName) {
-  if (!checkIfListExists(listName) && listName.isNotEmpty) {
-    shoppingLists.add(ShoppingList(listName: listName));
-    sendSnackBar("$listName lagt til!", Colors.green);
-    for (int i = 0; i < shoppingLists.length; i++) {
-      if (shoppingLists[i].listName == listName) {
-        selectedList = shoppingLists[i];
-      }
+/// Old version
+/// Not in use
+void handleListPicker2(String picked) {
+  bool found = false;
+  for (int i = 0; i < shoppingLists.length; i++) {
+    if (shoppingLists[i].listName == picked) {
+      selectedList = shoppingLists[i];
+      found = true;
+    }
+  }
+  if (!found && picked == "Opprett ny liste") {
+    if (!checkIfListExists(picked)) {
+      shoppingLists.add(ShoppingList(listName: "listeliste"));
     }
   }
 }
 
-void removeShoppingList(String listName) {
-  shoppingLists
-      .removeWhere((shoppinglist) => shoppinglist.listName == listName);
-  setFirstListOrEmptyList();
+/// Open a AlertDialog
+/// Not in use
+void openSimpleDialogSelector(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (_) => const AlertDialog(
+            title: Text("yeye"),
+            content: Text("yes"),
+          ));
 }
 
-/// Get a list of listnames for the scrollpicker dialog
-List<String> getScrollpickerItems() {
-  List<String> list = [];
-  list.add("Opprett ny liste");
-  for (int i = 0; i < shoppingLists.length; i++) {
-    list.add(shoppingLists[i].listName);
-  }
-  return list;
-}
-
-/**
- *
- *
- *
-    body: Column(
-    children: <Widget>[
-    Row(children: [
-    const Expanded(child: TextField()),
-    ElevatedButton(onPressed: () {}, child: const Text("Legg til"))
-    ]),
-    Column(
-    children: <Widget>[
-    Expanded(
-    child: ListView(
-    children: [
-    ListView.builder(
-    itemCount: items.length,
-    itemBuilder: (BuildContext context, int index) {
-    return Card(
-    child: ListTile(
-    title: Text(items[index]),
-    ),
-    );
+/// Old version
+/// not in use
+void openListPicker(BuildContext context) {
+  List<String> items = getScrollpickerItems();
+  showMaterialScrollPicker<String>(
+    title: "Velg handleliste",
+    context: context,
+    items: items,
+    selectedItem: items[0],
+    onChanged: (value) => {
+      //handleListPicker(value),
+      _scaffoldKey.currentState?.setState(() {
+        handleListPicker(value, context);
+      })
     },
-    )
-    ]))
-    ],
-    )
-    ],
-    )),
- */
+  );
+  _scaffoldKey.currentState?.setState(() {});
+}
+
+/// Adds a test list to shoppinglists
+void addTestList() {
+  ShoppingList testList = ShoppingList(listName: "En list for test");
+  shoppingLists.add(testList);
+  selectedList = testList;
+}
+
+/// generate tabs for tabbar
+/// Old, not in use
+List<Tab> generateTabs() {
+  List<Tab> tabs = [];
+  for (int i = 0; i < shoppingLists.length; i++) {
+    tabs.add(Tab(
+      text: shoppingLists[i].listName,
+    ));
+  }
+  return tabs;
+}
