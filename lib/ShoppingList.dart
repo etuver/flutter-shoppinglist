@@ -12,6 +12,8 @@ class ShoppingList {
   });
 
   /// Add a listing to listings
+  /// only adds if listing doesn't exist already
+  /// also sorts the list after to get checked items last
   void addListing(Listing listing) {
     bool exists = false;
     for (int i = 0; i < listings.length; i++) {
@@ -51,6 +53,7 @@ class ShoppingList {
   }
 
   /// Search for listing by name and change its checked status
+  /// sorts the list when added
   void changeCheckedStatus(String name) {
     for (int i = 0; i < listings.length; i++) {
       if (listings[i].name == name) {
@@ -65,23 +68,21 @@ class ShoppingList {
     listings.removeWhere((listing) => listing.checked == true);
   }
 
+  /// Maps the ShoppingList to a Json string
   Map toJson() => {
         "listname": listName,
         "listings": listings,
       };
 
+  /// Decode a dynamic json into a ShoppingList object
+  /// and adds all its listings
   factory ShoppingList.fromJson(dynamic json) {
     ShoppingList shoppingList = ShoppingList(listName: json["listname"]);
     List<Listing> listingsfromJson = <Listing>[];
     List<dynamic> jsonListings = List.from(json['listings']);
-
-    //print(jsonListings);
-
     for (int i = 0; i < jsonListings.length; i++) {
       listingsfromJson.add(Listing.fromJson(jsonListings[i]));
     }
-
-    //listingsfromJson = json["listings"];
     shoppingList.listings = listingsfromJson;
     return shoppingList;
   }

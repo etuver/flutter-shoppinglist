@@ -7,11 +7,13 @@ class Listing {
 
   Listing({required this.name});
 
+  /// Maps the Listing into a Json string
   Map toJson() => {
         "name": name,
         "Checked": checked,
       };
 
+  /// Decode a dynamic json  into a Listing object
   factory Listing.fromJson(dynamic json) {
     Listing listing = Listing(name: json["name"]);
     listing.checked = json['Checked'];
