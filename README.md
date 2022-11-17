@@ -2,6 +2,26 @@
 
 IDATT2506 Prosjektøving
 
+## Hvordan bruke appen:
+- Opprette ny handleliste: 
+  - Dersom man ikke har noen lister fra tidligere, trykk på "Legg til ny liste"
+  - Dersom man har lister fra tidligere, åpne oversikten over lister, og velg "opprett ny liste" i 
+    menyen som dukker opp.
+- Åpne oversikt over handlelister / velge liste:
+  - Trykk på "Velg liste" dersom ingen lister er valgt
+  - Trykk på tittelen til valgte liste
+- Legge til innslag på en liste: 
+  - Skriv navn på innslag i tekstfeltet og trykk på pluss-knappen
+-Markere innslag som ferdig/ ikke ferdig: 
+  - Trykk på aktuelle innslag i listen
+- Fjerne alle innslag som er markert ferdig:
+  - Åpne menyen via knappen øverst til høyre, og velg "Fjern markerte varer"
+- Slette en liste:
+  - Ha aktuelle liste som valg liste, åpne menyen øverst til høyre, og velg "Slett denne listen"
+
+
+
+
 ## Utvikling og testing
 - Debugging under utvikling er gjennomført med OnePLus Nord N10 5G via Wifi.
 - Applikasjonen er også testet på Iphone 12.
